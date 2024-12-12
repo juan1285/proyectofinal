@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -6,7 +7,7 @@ import { FaShoppingCart, FaUserCircle, FaSignOutAlt } from "react-icons/fa"; // 
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-const productos = [
+const productos: Producto[] = [
   {
     id: 1,
     nombre: "BATERIA DE COCINA 38 PZAS",
@@ -39,7 +40,8 @@ const productos = [
   }
 ]
   
-const productos2 = [
+
+const productos2: Producto[] = [
   {
     id: 1,
     nombre: "DESCORCHADOR ELECTRICO CUISINART",
@@ -65,43 +67,41 @@ const productos2 = [
 const usuario = {
   nombre: "Juan Ángel Hernández Fonseca",
 };
+interface Producto {
+    id: number;
+    nombre: string;
+    precio: number;
+    imagen: string;
+    cantidad?: number;  // cantidad es opcional en la interfaz Producto
+  }
+  
 
-interface LoginForm {
-  email: string;
-  password: string;
-}
 
-interface CreateAccountForm {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface ForgotPasswordForm {
-  email: string;
-}
 
 export default function Cocina() {
-  const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
+
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false);
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito
   const router = useRouter();
   const [cantidad, setCantidad] = useState(0); // Estado para la cantidad de productos
-  const [carrito, setCarrito] = useState<any[]>([]); // Estado para el carrito
+  const [carrito, setCarrito] = useState<Producto[]>([]);  // Estado para el carrito
   
   // Función para agregar un producto al carrito
-  const agregarAlCarrito = (producto: any) => {
-    if (cantidad > 0) {
-      // Agregamos el producto con la cantidad seleccionada al carrito
-      setCarrito([
-        ...carrito,
-        { ...producto, cantidad } // Producto con su cantidad
-      ]);
-      setCantidad(0); // Reseteamos la cantidad después de agregarlo al carrito
-      setMostrarCarrito(true); // Abrir el cajón del carrito automáticamente
-      alert("Producto agregado al carrito");
-    }
+  const agregarAlCarrito = (producto: Producto) => {
+    const productoConCantidad = {
+      ...producto,
+      cantidad: producto.cantidad ? producto.cantidad : 1 // Asignar 1 si no tiene cantidad
+    };
+  
+    setCarrito([
+      ...carrito,
+      productoConCantidad
+    ]);
+    setCantidad(0); 
+    setMostrarCarrito(true); 
+    alert("Producto agregado al carrito");
   };
+  
 
   const incrementarCantidad = () => {
     setCantidad(cantidad + 1);
@@ -110,14 +110,6 @@ export default function Cocina() {
   const decrementarCantidad = () => {
     if (cantidad > 0) {
       setCantidad(cantidad - 1);
-    }
-  };
-
-  const toggleSubmenu = (submenu: string) => {
-    if (submenuAbierto === submenu) {
-      setSubmenuAbierto(null);
-    } else {
-      setSubmenuAbierto(submenu);
     }
   };
 
@@ -201,11 +193,13 @@ export default function Cocina() {
                   carrito.map((item, index) => (
                     <li key={index} className="flex items-center justify-between border-b py-2">
                       <div className="flex items-center">
-                        <img
-                          src={item.imagen}
-                          alt={item.nombre}
-                          className="w-16 h-16 object-cover mr-4"
-                        />
+                      <Image
+  src={item.imagen}
+  alt={item.nombre}
+  className="w-16 h-16 object-cover mr-4"
+  width={64}  // El valor de 64px en w-16 corresponde a 64px
+  height={64} // El valor de 64px en h-16 corresponde a 64px
+/>
                         <div>
                           <p className="text-sm font-semibold">{item.nombre}</p>
                           <div className="flex items-center space-x-2 mt-1">
@@ -225,7 +219,10 @@ export default function Cocina() {
                           </div>
                         </div>
                       </div>
-                      <p className="text-sm font-semibold">{`$${item.precio * item.cantidad}`}</p>
+                      <p className="text-sm font-semibold">
+  {`$${item.precio * (item.cantidad || 1)}`} {/* Si cantidad es undefined, usa 1 */}
+</p>
+
                     </li>
                   ))
                 )}
@@ -256,11 +253,13 @@ export default function Cocina() {
               <div className="flex justify-around" key={producto.id}>
                 <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
                   <div className="flex justify-between items-start w-full">
-                    <img
-                      src={producto.imagen}
-                      className="w-[150px] h-[150px] object-cover"
-                      alt={producto.nombre}
-                    />
+                  <Image
+  src={producto.imagen}
+  alt={producto.nombre}
+  className="w-[150px] h-[150px] object-cover"
+  width={150}  // El valor de 150px en w-[150px] y h-[150px] corresponde a 150px
+  height={150} // El valor de 150px en w-[150px] y h-[150px] corresponde a 150px
+/>
                     <p className="ml-4 mt-2 text-left">{producto.nombre}</p>
                   </div>
                   <p className="mt-10 text-lg font-semibold text-gray-700">
@@ -310,11 +309,13 @@ export default function Cocina() {
               <div className="flex justify-around" key={producto.id}>
                 <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
                   <div className="flex justify-between items-start w-full">
-                    <img
-                      src={producto.imagen}
-                      className="w-[150px] h-[150px] object-cover"
-                      alt={producto.nombre}
-                    />
+                  <Image
+  src={producto.imagen}
+  alt={producto.nombre}
+  className="w-16 h-16 object-cover mr-4"
+  width={64}  // El valor de 16px en w-16 y h-16 corresponde a 64px
+  height={64} // El valor de 16px en w-16 y h-16 corresponde a 64px
+/>
                     <p className="ml-4 mt-2 text-left">{producto.nombre}</p>
                   </div>
                   <p className="mt-10 text-lg font-semibold text-gray-700">

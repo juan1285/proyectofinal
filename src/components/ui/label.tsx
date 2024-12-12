@@ -1,9 +1,7 @@
 import React from "react";
 
-interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {}
+const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({ className, ...props }) => {
+  return <input className={className} {...props} />;
+};
 
-const Label: React.FC<LabelProps> = ({ className, ...props }) => {
-  return <label className={className} {...props} />;
-}
-
-export default Label;
+export default Input;

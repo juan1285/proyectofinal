@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Carousel as ReactCarousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Importa los estilos para el carrusel
 
@@ -26,11 +27,13 @@ const Carousel = ({ productos }: CarouselProps) => {
       >
         {productos.map((producto) => (
           <div key={producto.id} className="text-center">
-            <img
-              src={producto.imagen}
-              alt={producto.nombre}
-              className="w-full h-48 object-cover rounded-lg mb-4"
-            />
+            <Image
+  src={producto.imagen}
+  alt={producto.nombre}
+  width={500}  // Define un ancho adecuado
+  height={300} // Define una altura adecuada
+  className="w-full h-48 object-cover rounded-lg mb-4"
+/>
             <h3 className="text-lg font-semibold">{producto.nombre}</h3>
             <p className="text-gray-600">${producto.precio}</p>
           </div>

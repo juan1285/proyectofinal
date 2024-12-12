@@ -1,7 +1,6 @@
 "use client";
 import Image from 'next/image'; // Asegúrate de importar Image
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaShoppingCart, FaUserCircle, FaSignOutAlt } from "react-icons/fa"; // Importación de íconos de Font Awesome
@@ -20,25 +19,17 @@ const usuario = {
 
 export default function Shop() {
  
-  const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
+  
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false);
  
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito
  
   const router = useRouter();
-  const [cantidad, setCantidad] = useState(0); // Estado para la cantidad de productos
-  const [carrito, setCarrito] = useState<any[]>([]); // Estado para el carrito
+  
 
 
 
 
-  const toggleSubmenu = (submenu: string) => {
-    if (submenuAbierto === submenu) {
-      setSubmenuAbierto(null);
-    } else {
-      setSubmenuAbierto(submenu);
-    }
-  };
 
   const toggleMenuCuenta = () => {
     setMostrarMenuCuenta(!mostrarMenuCuenta);
@@ -162,25 +153,33 @@ export default function Shop() {
             )}
           >
             <div className="flex justify-center">
-              <img
-                src="https://cdn.homedepot.com.mx/temporalidades/2024/11_NoviembreDelAhorro/HOME/ATT-temp12_00-D.jpg"
-                alt="Producto 1"
-                className="w-full h-72 object-cover rounded-md"
-              />
-            </div>
-            <div className="flex justify-center">
-              <img
-                src="https://cdn.homedepot.com.mx/temporalidades/2024/12_Vigencia_12/HOME/ATT-regalos-D.jpg"
-                alt="Producto 2"
-                className="w-full h-72 object-cover rounded-md"
-              />
-            </div>
-            <div className="flex justify-center">
-              <img
-                src="https://cdn.homedepot.com.mx/temporalidades/2024/12_Vigencia_12/HOME/ATT-reuniones-D.jpg"
-                alt="Producto 3"
-                className="w-full h-72 object-cover rounded-md"
-              />
+            <Image
+    src="https://cdn.homedepot.com.mx/temporalidades/2024/11_NoviembreDelAhorro/HOME/ATT-temp12_00-D.jpg"
+    alt="Producto 1"
+    className="w-full h-72 object-cover rounded-md"
+    width={500}  // Puedes ajustar el ancho según tus necesidades
+    height={288} // El alto debe ajustarse proporcionalmente al ancho
+  />
+</div>
+
+<div className="flex justify-center">
+  <Image
+    src="https://cdn.homedepot.com.mx/temporalidades/2024/12_Vigencia_12/HOME/ATT-regalos-D.jpg"
+    alt="Producto 2"
+    className="w-full h-72 object-cover rounded-md"
+    width={500}
+    height={288}
+  />
+</div>
+
+<div className="flex justify-center">
+  <Image
+    src="https://cdn.homedepot.com.mx/temporalidades/2024/12_Vigencia_12/HOME/ATT-reuniones-D.jpg"
+    alt="Producto 3"
+    className="w-full h-72 object-cover rounded-md"
+    width={500}
+    height={288}
+  />
             </div>
           </Carousel>
         </div>
@@ -586,10 +585,13 @@ export default function Shop() {
 </div>
         <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md flex flex-col">
   <div className="flex justify-between items-start w-full">
-    <img 
-      src="https://cdn.homedepot.com.mx/productos/163154/163154.jpg" 
-      className="w-[150px] h-[150px] object-cover" 
-    />
+  <Image
+  src="https://cdn.homedepot.com.mx/productos/163154/163154.jpg"
+  alt="Producto"
+  className="w-[150px] h-[150px] object-cover"
+  width={150}  // Ancho de la imagen
+  height={150} // Alto de la imagen
+/>
     <p className="ml-4 mt-2 text-left">SET DE SILLAS DE METAL 99 X 37 X 44 CM NEGRO 4 PIEZAS</p>
   </div>
 

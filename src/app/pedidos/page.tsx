@@ -11,18 +11,10 @@ const usuario = {
 };
 
 export default function Ayuda() {
-  const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false); // Estado para mostrar el menú de cuenta
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito
   const router = useRouter()
 
-  const toggleSubmenu = (submenu: string) => {
-    if (submenuAbierto === submenu) {
-      setSubmenuAbierto(null);
-    } else {
-      setSubmenuAbierto(submenu);
-    }
-  };
 
   const toggleMenuCuenta = () => {
     setMostrarMenuCuenta(!mostrarMenuCuenta);

@@ -11,7 +11,6 @@ const usuario = {
 };
 
 export default function Ayuda() {
-  const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false); // Estado para mostrar el menú de cuenta
   const [acordeonAbierto, setAcordeonAbierto] = useState<number | null>(null); // Estado para manejar los acordeones
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito
@@ -160,11 +159,13 @@ export default function Ayuda() {
         </div>
 
         <div className="flex-none self-center ml-6">
-          <img
-            src="https://cdn.homedepot.com.mx/assets/img/uilib/help/popular_topics_cover_img.jpg"
-            alt="Temas frecuentes"
-            className="w-full h-auto max-w-[705px] max-h-[470px] object-cover"
-          />
+        <Image
+  src="https://cdn.homedepot.com.mx/assets/img/uilib/help/popular_topics_cover_img.jpg"
+  alt="Temas frecuentes"
+  className="object-cover"
+  width={705}  // Ancho de la imagen
+  height={470} // Alto de la imagen
+/>
         </div>
       </section>
 

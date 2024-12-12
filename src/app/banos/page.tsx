@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image';
 import React, {  useState } from 'react';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -92,34 +93,35 @@ const usuario = {
 };
 
 interface Producto {
-  id: string;
+  id: number; // Cambiar de string a number
   nombre: string;
   precio: number;
-  cantidad?: number;
+  imagen: string; // Asegúrate de que la imagen está incluida en la definición
+  cantidad?: number; // La cantidad es opcional
 }
 
+
+
 export default function Banos() {
-  const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false);
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito
   const router = useRouter();
   const [cantidad, setCantidad] = useState(0); // Estado para la cantidad de productos
-  const [carrito, setCarrito] = useState<any[]>([]); // Estado para el carrito
-  
-  // Función para agregar un producto al carrito
-  const agregarAlCarrito = (producto: any) => {
+  const [carrito, setCarrito] = useState<Producto[]>([]); // Estado para el carrito
+
+  const agregarAlCarrito = (producto: Producto) => {
     if (cantidad > 0) {
-      // Agregamos el producto con la cantidad seleccionada al carrito
       setCarrito([
         ...carrito,
-        { ...producto, cantidad } // Producto con su cantidad
+        { ...producto, cantidad: cantidad || 1 } // Asegúrate de que cantidad nunca sea undefined
       ]);
       setCantidad(0); // Reseteamos la cantidad después de agregarlo al carrito
       setMostrarCarrito(true); // Abrir el cajón del carrito automáticamente
       alert("Producto agregado al carrito");
     }
   };
-
+  
+  
   const incrementarCantidad = () => {
     setCantidad(cantidad + 1);
   };
@@ -130,13 +132,7 @@ export default function Banos() {
     }
   };
 
-  const toggleSubmenu = (submenu: string) => {
-    if (submenuAbierto === submenu) {
-      setSubmenuAbierto(null);
-    } else {
-      setSubmenuAbierto(submenu);
-    }
-  };
+
 
   const toggleMenuCuenta = () => {
     setMostrarMenuCuenta(!mostrarMenuCuenta);
@@ -220,11 +216,13 @@ export default function Banos() {
                   carrito.map((item, index) => (
                     <li key={index} className="flex items-center justify-between border-b py-2">
                       <div className="flex items-center">
-                        <img
-                          src={item.imagen}
-                          alt={item.nombre}
-                          className="w-16 h-16 object-cover mr-4"
-                        />
+                      <Image
+  src={item.imagen}
+  alt={item.nombre}
+  className="object-cover mr-4"
+  width={64}  // Tamaño de 64px para el ancho
+  height={64} // Tamaño de 64px para la altura
+/>
                         <div>
                           <p className="text-sm font-semibold">{item.nombre}</p>
                           <div className="flex items-center space-x-2 mt-1">
@@ -244,7 +242,7 @@ export default function Banos() {
                           </div>
                         </div>
                       </div>
-                      <p className="text-sm font-semibold">{`$${item.precio * item.cantidad}`}</p>
+                      <p className="text-sm font-semibold">{`$${item.precio * (item.cantidad ?? 1)}`}</p>
                     </li>
                   ))
                 )}
@@ -275,11 +273,14 @@ export default function Banos() {
               <div className="flex justify-around" key={producto.id}>
                 <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
                   <div className="flex justify-between items-start w-full">
-                    <img
-                      src={producto.imagen}
-                      className="w-[150px] h-[150px] object-cover"
-                      alt={producto.nombre}
-                    />
+                   
+<Image
+  src={producto.imagen}
+  alt={producto.nombre}
+  className="object-cover"
+  width={150}  // Define el ancho de la imagen en 150px
+  height={150} // Define el alto de la imagen en 150px
+/>
                     <p className="ml-4 mt-2 text-left">{producto.nombre}</p>
                   </div>
                   <p className="mt-10 text-lg font-semibold text-gray-700">
@@ -329,11 +330,14 @@ export default function Banos() {
               <div className="flex justify-around" key={producto.id}>
                 <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
                   <div className="flex justify-between items-start w-full">
-                    <img
-                      src={producto.imagen}
-                      className="w-[150px] h-[150px] object-cover"
-                      alt={producto.nombre}
-                    />
+                    
+<Image
+  src={producto.imagen}
+  alt={producto.nombre}
+  className="object-cover"
+  width={150}  // Ancho de 150px
+  height={150} // Alto de 150px
+/>
                     <p className="ml-4 mt-2 text-left">{producto.nombre}</p>
                   </div>
                   <p className="mt-10 text-lg font-semibold text-gray-700">
