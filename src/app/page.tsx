@@ -1,101 +1,251 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { FaGoogle, FaFacebook, FaApple } from "react-icons/fa";
+import { useRouter } from "next/navigation"; // Importar el hook useRouter
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [activeTab, setActiveTab] = useState<"default" | "iniciar-sesion" | "registrarse">("default");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [newUserEmail, setNewUserEmail] = useState("");
+  const [newUserPassword, setNewUserPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter(); // Inicializar el router para redirigir
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [users, setUsers] = useState<{ email: string; password: string }[]>([]);
+
+  const handleTabClick = (tab: "default" | "iniciar-sesion" | "registrarse") => {
+    setActiveTab(tab);
+    setErrorMessage(""); // Limpiar cualquier mensaje de error al cambiar de tab
+  };
+
+  const handleCreateAccount = () => {
+    if (newUserEmail && newUserPassword) {
+      // Comprobación para ver si ya existe un usuario con ese correo
+      const userExists = users.some(user => user.email === newUserEmail);
+      if (userExists) {
+        setErrorMessage("Ya existe una cuenta con este correo electrónico.");
+        return;
+      }
+
+      setUsers((prevUsers) => [
+        ...prevUsers,
+        { email: newUserEmail, password: newUserPassword },
+      ]);
+      setNewUserEmail("");
+      setNewUserPassword("");
+      setActiveTab("iniciar-sesion");
+    } else {
+      setErrorMessage("Por favor, complete todos los campos.");
+    }
+  };
+
+  const handleLogin = () => {
+    // Redirigir sin validar las credenciales
+    router.push("./shop"); // Redirigir a la página shop
+  };
+  
+
+  return (
+    <main
+      className="min-h-screen bg-cover bg-center flex flex-col items-center justify-center px-4"
+      style={{
+        backgroundImage: "url('https://www.housedigest.com/img/gallery/why-checking-home-depots-website-daily-can-help-fulfill-your-wish-list/l-intro-1656076572.jpg')",
+      }}
+    >
+      {activeTab === "default" && (
+        <div className="text-center space-y-6 p-8 rounded-lg shadow-lg border-4 border-white bg-white">
+          <h1 className="text-4xl font-bold text-black font-poppins"> COMPANY-MAY</h1>
+          
+          <div className="space-x-4">
+            <button
+              onClick={() => handleTabClick("iniciar-sesion")}
+              className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+            >
+              Iniciar Sesión
+            </button>
+            <button
+              onClick={() => handleTabClick("registrarse")}
+              className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 transition"
+            >
+              Crear Cuenta
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      )}
+
+      {activeTab === "iniciar-sesion" && (
+        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 relative border-4 border-white">
+          <button
+            onClick={() => handleTabClick("default")}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg"
+          >
+            ✖
+          </button>
+          <h2 className="text-3xl font-bold text-gray-700 text-center mb-6">
+            Iniciar Sesión
+          </h2>
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Correo Electrónico
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Tu correo"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Contraseña
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Tu contraseña"
+              />
+            </div>
+            {errorMessage && (
+              <p className="text-red-500 text-sm">{errorMessage}</p>
+            )}
+            <div className="flex justify-between items-center text-sm">
+              <a
+                href="#"
+                className="text-blue-500 hover:text-blue-600"
+              >
+                ¿Has olvidado tu contraseña?
+              </a>
+            </div>
+            <button
+              type="button"
+              onClick={handleLogin}
+              className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow hover:bg-blue-600 transition"
+            >
+              Iniciar Sesión
+            </button>
+          </form>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm text-gray-500">
+              <span className="bg-white px-2">o</span>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <button
+              onClick={() => alert("Iniciar sesión con Google")}
+              className="flex items-center justify-center w-full px-4 py-2 bg-red-500 text-white rounded-md shadow hover:bg-red-600 transition"
+            >
+              <FaGoogle className="mr-2" /> Google
+            </button>
+            <button
+              onClick={() => alert("Iniciar sesión con Facebook")}
+              className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition"
+            >
+              <FaFacebook className="mr-2" /> Facebook
+            </button>
+            <button
+              onClick={() => alert("Iniciar sesión con Apple")}
+              className="flex items-center justify-center w-full px-4 py-2 bg-black text-white rounded-md shadow hover:bg-gray-800 transition"
+            >
+              <FaApple className="mr-2" /> Apple
+            </button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === "registrarse" && (
+        <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 relative border-4 border-white">
+          <button
+            onClick={() => handleTabClick("default")}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg"
+          >
+            ✖
+          </button>
+          <h2 className="text-3xl font-bold text-gray-700 text-center mb-6">
+            Crear Cuenta
+          </h2>
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                Nombre Completo
+              </label>
+              <input
+                id="name"
+                type="text"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                placeholder="Tu nombre"
+              />
+            </div>
+            <div>
+              <label htmlFor="new-email" className="block text-sm font-medium text-gray-700">
+                Correo Electrónico
+              </label>
+              <input
+                id="new-email"
+                type="email"
+                value={newUserEmail}
+                onChange={(e) => setNewUserEmail(e.target.value)}
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                placeholder="Tu correo"
+              />
+            </div>
+            <div>
+              <label htmlFor="new-password" className="block text-sm font-medium text-gray-700">
+                Contraseña
+              </label>
+              <input
+                id="new-password"
+                type="password"
+                value={newUserPassword}
+                onChange={(e) => setNewUserPassword(e.target.value)}
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                placeholder="Tu contraseña"
+              />
+            </div>
+            {errorMessage && (
+              <p className="text-red-500 text-sm">{errorMessage}</p>
+            )}
+            <div className="flex items-center">
+              <input
+                id="accept-policy"
+                type="checkbox"
+                className="mr-2"
+              />
+              <label htmlFor="accept-policy" className="text-sm text-gray-600">
+                Acepto las políticas de privacidad
+              </label>
+            </div>
+            <div className="flex items-center">
+              <input
+                id="accept-terms"
+                type="checkbox"
+                className="mr-2"
+              />
+              <label htmlFor="accept-terms" className="text-sm text-gray-600">
+                Acepto los términos y condiciones
+              </label>
+            </div>
+            <button
+              type="button"
+              onClick={handleCreateAccount}
+              className="w-full px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow hover:bg-green-600 transition"
+            >
+              Registrate
+            </button>
+          </form>
+        </div>
+      )}
+    </main>
   );
 }
