@@ -1,6 +1,6 @@
 "use client"; // Asegúrate de colocar esto al principio del archivo
+import Image from "next/image"; // Importamos el componente Image de Next.js
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaShoppingCart, FaUserCircle, FaSignOutAlt } from "react-icons/fa"; // Importación de íconos de Font Awesome
@@ -10,64 +10,14 @@ const usuario = {
   nombre: "Juan Ángel Hernández Fonseca",
 };
 
-interface LoginForm {
-  email: string;
-  password: string;
-}
-
-interface CreateAccountForm {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface ForgotPasswordForm {
-  email: string;
-}
-
 export default function Ayuda() {
-  const [menuDepartamentos, setMenuDepartamentos] = useState(false);
   const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
-  const [mostrarLogin, setMostrarLogin] = useState(false);
-  const [mostrarCrearCuenta, setMostrarCrearCuenta] = useState(false);
-  const [mostrarRecuperarContrasena, setMostrarRecuperarContrasena] = useState(false);
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false); // Estado para mostrar el menú de cuenta
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [acordeonAbierto, setAcordeonAbierto] = useState<number | null>(null); // Estado para manejar los acordeones
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
-  const { register: registerCreate, handleSubmit: handleSubmitCreate, formState: { errors: errorsCreate } } = useForm<CreateAccountForm>();
-  const { register: registerForgot, handleSubmit: handleSubmitForgot, formState: { errors: errorsForgot } } = useForm<ForgotPasswordForm>();
   const router = useRouter();
 
-  const onSubmit = (data: LoginForm) => {
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser) {
-      const { email, password } = JSON.parse(storedUser);
-
-      if (data.email === email && data.password === password) {
-        alert("Inicio de sesión exitoso");
-        router.push("/shop");
-      } else {
-        setErrorMessage("Correo o contraseña incorrectos");
-      }
-    } else {
-      setErrorMessage("No se encontró la cuenta");
-    }
-  };
-
-  const onCreateAccount = (data: CreateAccountForm) => {
-    alert(`Cuenta creada para ${data.name}`);
-
-    setMostrarCrearCuenta(false);
-  };
-
-  const onForgotPassword = (data: ForgotPasswordForm) => {
-    alert(`Se ha enviado un correo para recuperar la contraseña a ${data.email}`);
-    setMostrarRecuperarContrasena(false);
-  };
-
+ 
   const toggleSubmenu = (submenu: string) => {
     if (submenuAbierto === submenu) {
       setSubmenuAbierto(null);
@@ -142,7 +92,13 @@ export default function Ayuda() {
 
       <section className="flex items-center justify-between p-6 bg-white shadow-md">
         <div className="flex items-center space-x-10">
-          <img src="https://cdn.homedepot.com.mx/assets/img/uilib/help/home.svg" alt="Ayuda" className="w-50 h-100" />
+        <Image
+      src="https://cdn.homedepot.com.mx/assets/img/uilib/help/home.svg"
+      alt="Ayuda"
+      width={200} // Define un tamaño adecuado para la imagen
+      height={100} // Define un tamaño adecuado para la imagen
+      className="max-w-full h-auto"
+    />
           <div>
             <h3 className="text-3xl font-bold">¿Cómo podemos ayudarte?</h3>
           </div>
@@ -152,7 +108,13 @@ export default function Ayuda() {
       <section className="flex items-start justify-between p-6 bg-white shadow-md mt-6">
         <div className="flex-1">
           <div className="flex items-center space-x-4">
-            <img src="https://cdn.homedepot.com.mx/assets/img/uilib/help/popular-topics.svg" alt="Temas frecuentes" className="w-16 h-16" />
+          <Image
+        src="https://cdn.homedepot.com.mx/assets/img/uilib/help/popular-topics.svg"
+        alt="Temas frecuentes"
+        width={64} // Define el tamaño adecuado para la imagen
+        height={64} // Define el tamaño adecuado para la imagen
+        className="max-w-full h-auto"
+      />
             <div>
               <h3 className="text-lg font-semibold">Temas frecuentes</h3>
               <p className="text-sm text-gray-600">Explora las preguntas más populares.</p>
@@ -208,7 +170,7 @@ export default function Ayuda() {
           <img
             src="https://cdn.homedepot.com.mx/assets/img/uilib/help/popular_topics_cover_img.jpg"
             alt="Temas frecuentes"
-            className="w-[705px] h-[470px] object-cover"
+            className="w-full h-auto max-w-[705px] max-h-[470px] object-cover"
           />
         </div>
       </section>

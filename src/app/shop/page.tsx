@@ -1,6 +1,7 @@
 "use client";
+import Image from 'next/image'; // Asegúrate de importar Image
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaShoppingCart, FaUserCircle, FaSignOutAlt } from "react-icons/fa"; // Importación de íconos de Font Awesome
@@ -15,83 +16,21 @@ const usuario = {
 // Productos simulados (se usa para el carrusel)
 
 
-interface LoginForm {
-  email: string;
-  password: string;
-}
 
-interface CreateAccountForm {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface ForgotPasswordForm {
-  email: string;
-}
 
 export default function Shop() {
-  const [menuDepartamentos, setMenuDepartamentos] = useState(false);
+ 
   const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
-  const [mostrarLogin, setMostrarLogin] = useState(false);
-  const [mostrarCrearCuenta, setMostrarCrearCuenta] = useState(false);
-  const [mostrarRecuperarContrasena, setMostrarRecuperarContrasena] = useState(false);
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [busquedaSucursal, setBusquedaSucursal] = useState("");
-  const [opcionesSucursal, setOpcionesSucursal] = useState<string[]>([]);
+ 
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
-  const { register: registerCreate, handleSubmit: handleSubmitCreate, formState: { errors: errorsCreate } } = useForm<CreateAccountForm>();
-  const { register: registerForgot, handleSubmit: handleSubmitForgot, formState: { errors: errorsForgot } } = useForm<ForgotPasswordForm>();
+ 
   const router = useRouter();
   const [cantidad, setCantidad] = useState(0); // Estado para la cantidad de productos
   const [carrito, setCarrito] = useState<any[]>([]); // Estado para el carrito
-  
 
-  const incrementarCantidad = () => {
-    setCantidad(cantidad + 1);
-  };
 
-  const decrementarCantidad = () => {
-    if (cantidad > 0) {
-      setCantidad(cantidad - 1);
-    }
-  };
 
-  const agregarAlCarrito = () => {
-    if (cantidad > 0) {
-      setCarrito([...carrito, { producto: "Producto X", cantidad }]);
-      setCantidad(0); // Reseteamos el contador después de agregar al carrito
-    }
-  };
-
-  const onSubmit = (data: LoginForm) => {
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser) {
-      const { email, password } = JSON.parse(storedUser);
-
-      if (data.email === email && data.password === password) {
-        alert("Inicio de sesión exitoso");
-        router.push("/shop");
-      } else {
-        setErrorMessage("Correo o contraseña incorrectos");
-      }
-    } else {
-      setErrorMessage("No se encontró la cuenta");
-    }
-  };
-
-  const onCreateAccount = (data: CreateAccountForm) => {
-    alert(`Cuenta creada para ${data.name}`);
-    setMostrarCrearCuenta(false);
-  };
-
-  const onForgotPassword = (data: ForgotPasswordForm) => {
-    alert(`Se ha enviado un correo para recuperar la contraseña a ${data.email}`);
-    setMostrarRecuperarContrasena(false);
-  };
 
   const toggleSubmenu = (submenu: string) => {
     if (submenuAbierto === submenu) {
@@ -273,65 +212,150 @@ export default function Shop() {
     >
       {/* Carrusel 1 */}
       <div className="flex justify-around">
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-regalos_nja.jpg" alt="Imagen 1" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Regalos</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-calentadores.jpg" alt="Imagen 2" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Calentadores</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-pisos.jpg" alt="Imagen 3" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Pisos</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-refrigeradores.jpg" alt="Imagen 4" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Refrigeradores</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-banos.jpg" alt="Imagen 5" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Baños</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-calefactores.jpg" alt="Imagen 6" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Calefactores</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-pintura.jpg" alt="Imagen 7" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Pintura</p> {/* Texto debajo de la imagen */}
-        </div>
-      </div>
+  {/* Carrusel 1 */}
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-regalos_nja.jpg"
+      alt="Imagen 1"
+      width={160} // Define el tamaño adecuado para la imagen
+      height={120} // Define el tamaño adecuado para la imagen
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Regalos</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-calentadores.jpg"
+      alt="Imagen 2"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Calentadores</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-pisos.jpg"
+      alt="Imagen 3"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Pisos</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-refrigeradores.jpg"
+      alt="Imagen 4"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Refrigeradores</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-banos.jpg"
+      alt="Imagen 5"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Baños</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-calefactores.jpg"
+      alt="Imagen 6"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Calefactores</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-pintura.jpg"
+      alt="Imagen 7"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Pintura</p>
+  </div>
+</div>
 
-      {/* Carrusel 2 */}
-      <div className="flex justify-around">
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-seguridad.jpg" alt="Imagen 8" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Seguridad</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-herramientas.jpg" alt="Imagen 9" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Herramientas </p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-lavadoras.jpg" alt="Imagen 10" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Lavadoras</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-iluminacion.jpg" alt="Imagen 11" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">iluminacion</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-impermeabilizantes.jpg" alt="Imagen 12" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Impermeabilizantes</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-navidad.jpg" alt="Imagen 13" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Navidad</p> {/* Texto debajo de la imagen */}
-        </div>
-        <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
-          <img src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-organizacion.jpg" alt="Imagen 14" className="w-[160px] h-[120px] object-cover" />
-          <p className="mt-2 text-center">Organización</p> {/* Texto debajo de la imagen */}
+{/* Carrusel 2 */}
+<div className="flex justify-around">
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-seguridad.jpg"
+      alt="Imagen 8"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Seguridad</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-herramientas.jpg"
+      alt="Imagen 9"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Herramientas</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-lavadoras.jpg"
+      alt="Imagen 10"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Lavadoras</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-iluminacion.jpg"
+      alt="Imagen 11"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Iluminación</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-impermeabilizantes.jpg"
+      alt="Imagen 12"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Impermeabilizantes</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-navidad.jpg"
+      alt="Imagen 13"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Navidad</p>
+  </div>
+  <div className="w-[180px] h-[161.8px] bg-white-200 p-4 rounded-md">
+    <Image
+      src="https://cdn.homedepot.com.mx/temporalidades/carrusel_categorias/iconos/departamentos-organizacion.jpg"
+      alt="Imagen 14"
+      width={160}
+      height={120}
+      className="object-cover"
+    />
+    <p className="mt-2 text-center">Organización</p>
         </div>
       </div>
     </Carousel>
@@ -366,7 +390,13 @@ export default function Shop() {
       <div className="flex justify-around">
       <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
       <div className="flex justify-between items-start w-full">
-      <img src="https://cdn.homedepot.com.mx/productos/116157/116157.jpg"className="w-[150px] h-[150px] object-cover" />
+      <Image 
+  src="https://cdn.homedepot.com.mx/productos/116157/116157.jpg" 
+  alt="Producto" 
+  width={150} 
+  height={150} 
+  className="object-cover" 
+/>
      <p className="ml-4 mt-2 text-left">INTERCERAMIC SANITARIO LOGAN UNA PIEZA DESCARGA DOBLE</p>
      </div>
          
@@ -388,7 +418,13 @@ export default function Shop() {
 </div>
         <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
       <div className="flex justify-between items-start w-full">
-      <img src="https://cdn.homedepot.com.mx/productos/199843/199843.jpg"className="w-[150px] h-[150px] object-cover" />
+      <Image 
+  src="https://cdn.homedepot.com.mx/productos/199843/199843.jpg" 
+  alt="Producto" 
+  width={150} 
+  height={150} 
+  className="object-cover" 
+/>
      <p className="ml-4 mt-2 text-left">REFRIGERADOR BESPOKE SAMSUNG SBS 28 PIES RS28CB70NAQLEM. INCLUYE PANELES ACABADO ACERO</p>
      </div>
          {/* Precio debajo de la imagen */}
@@ -409,7 +445,13 @@ export default function Shop() {
 </div>
         <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
       <div className="flex justify-between items-start w-full">
-      <img src="https://cdn.homedepot.com.mx/productos/143349/143349.jpg"className="w-[150px] h-[150px] object-cover" />
+      <Image 
+  src="https://cdn.homedepot.com.mx/productos/143349/143349.jpg" 
+  alt="Producto" 
+  width={150} 
+  height={150} 
+  className="object-cover" 
+/>
      <p className="ml-4 mt-2 text-left">CALENTADOR DE AGUA INSTANTÁNEO 7 L GAS LP PARA 1 SERVICIO BAJA O ALTA PRESIÓN</p>
      </div>
        {/* Precio debajo de la imagen */}
@@ -430,7 +472,13 @@ export default function Shop() {
 </div>
         <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
       <div className="flex justify-between items-start w-full">
-      <img src="https://cdn.homedepot.com.mx/productos/194228/194228.jpg"className="w-[150px] h-[150px] object-cover" />
+      <Image 
+  src="https://cdn.homedepot.com.mx/productos/194228/194228.jpg" 
+  alt="Producto" 
+  width={150} 
+  height={150} 
+  className="object-cover" 
+/>
      <p className="ml-4 mt-2 text-left">ECHO DOT 5TA NEGRO</p>
      </div>
         {/* Precio debajo de la imagen */}
@@ -454,7 +502,13 @@ export default function Shop() {
       <div className="flex justify-around">
       <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
       <div className="flex justify-between items-start w-full">
-      <img src="https://cdn.homedepot.com.mx/productos/170698/170698.jpg"className="w-[150px] h-[150px] object-cover" />
+      <Image 
+  src="https://cdn.homedepot.com.mx/productos/170698/170698.jpg" 
+  alt="Producto" 
+  width={150} 
+  height={150} 
+  className="object-cover" 
+/>
      <p className="ml-4 mt-2 text-left">COMBO PACKOUT DE 3 PIEZAS</p>
      </div>
         {/* Precio debajo de la imagen */}
@@ -475,7 +529,14 @@ export default function Shop() {
 </div>
         <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
       <div className="flex justify-between items-start w-full">
-      <img src="https://cdn.homedepot.com.mx/productos/165590/165590.jpg"className="w-[150px] h-[150px] object-cover" />
+     
+<Image 
+  src="https://cdn.homedepot.com.mx/productos/143349/143349.jpg" 
+  alt="Producto" 
+  width={150} 
+  height={150} 
+  className="object-cover" 
+/>
      <p className="ml-4 mt-2 text-left">DEPOSITO EXTERIORES DARWIN 190x122x221 CM (DOBLE PUERTA)</p>
      </div>
     {/* Precio debajo de la imagen */}
@@ -497,7 +558,13 @@ export default function Shop() {
 
         <div className="w-[338px] h-[337px] bg-white border border-gray-300 shadow-md p-4 rounded-md">
       <div className="flex justify-between items-start w-full">
-      <img src="https://cdn.homedepot.com.mx/productos/210977/210977.jpg"className="w-[150px] h-[150px] object-cover" />
+      <Image 
+  src="https://cdn.homedepot.com.mx/productos/210977/210977.jpg" 
+  alt="Producto" 
+  width={150} 
+  height={150} 
+  className="object-cover" 
+/>
      <p className="ml-7 mt-2 text-left">LÁMPARA COLGANTE INCANDESCENTE 1.03 M X 33 CM NEGRO</p>
      </div>
        
