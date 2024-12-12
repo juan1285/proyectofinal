@@ -91,22 +91,14 @@ const usuario = {
   nombre: "Juan Ángel Hernández Fonseca",
 };
 
-interface LoginForm {
-  email: string;
-  password: string;
+interface Producto {
+  id: string;
+  nombre: string;
+  precio: number;
+  cantidad?: number;
 }
 
-interface CreateAccountForm {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface ForgotPasswordForm {
-  email: string;
-}
-
-export default function banos() {
+export default function Banos() {
   const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false);
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito

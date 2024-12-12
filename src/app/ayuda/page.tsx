@@ -18,13 +18,6 @@ export default function Ayuda() {
   const router = useRouter();
 
  
-  const toggleSubmenu = (submenu: string) => {
-    if (submenuAbierto === submenu) {
-      setSubmenuAbierto(null);
-    } else {
-      setSubmenuAbierto(submenu);
-    }
-  };
 
   const toggleMenuCuenta = () => {
     setMostrarMenuCuenta(!mostrarMenuCuenta);

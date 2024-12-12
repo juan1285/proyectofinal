@@ -81,7 +81,7 @@ interface ForgotPasswordForm {
   email: string;
 }
 
-export default function cocina() {
+export default function Cocina() {
   const [submenuAbierto, setSubmenuAbierto] = useState<string | null>(null);
   const [mostrarMenuCuenta, setMostrarMenuCuenta] = useState(false);
   const [mostrarCarrito, setMostrarCarrito] = useState(false); // Estado para mostrar el cajón del carrito
