@@ -1,7 +1,12 @@
 {
+  "extends": ["next/core-web-vitals", "plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "jsx-a11y/alt-text": "off",
-    "@next/next/no-img-element": "off",
-    "@typescript-eslint/no-empty-object-type": "off"
+    // Aquí puedes agregar reglas personalizadas si es necesario
   }
 }
